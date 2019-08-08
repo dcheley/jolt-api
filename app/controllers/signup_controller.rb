@@ -17,7 +17,7 @@ class SignupController < ApplicationController
       # Save in firebase db
       firebase_response = firebase.push("users", user)
 
-      render json: { csrf: tokens[:csrf] }
+      render json: { csrf: tokens[:csrf], user_id: user.id }
     else
       render json: { error: user.errors.full_messages.join(' ') }, status: :unprocessable_entity
     end
@@ -26,6 +26,6 @@ class SignupController < ApplicationController
   private
 
   def user_params
-    params.require(:signup).permit(:email, :password, :password_confirmation, :name)
+    params.require(:signup).permit(:first_name, :last_name, :email, :password, :password_confirmation)
   end
 end
