@@ -11,6 +11,13 @@ module Api
         render json: @merchants
       end
 
+      # GET /search_merchants
+      def search_merchants
+        @merchants = Merchant.search(params[:search].order("name ASC"))
+
+        render json: @merchants
+      end
+
       # GET /merchants/1
       def show
         render json: @merchant
