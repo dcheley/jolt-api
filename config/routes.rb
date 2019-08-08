@@ -5,6 +5,8 @@ Rails.application.routes.draw do
       resources :promotions
       resources :merchants
       resources :users
+
+      get "search_merchants", to: "merchants#search_merchants"
     end
   end
 
@@ -15,5 +17,4 @@ Rails.application.routes.draw do
   post "signup", to: "signup#create"
   post "signin", to: "signin#create"
   delete "signout", to: "signin#destroy"
-
 end
