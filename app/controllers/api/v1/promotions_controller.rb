@@ -44,15 +44,15 @@ module Api
       end
 
       private
-        # Use callbacks to share common setup or constraints between actions.
-        def set_promotion
-          @promotion = Promotion.find(params[:id])
-        end
+      # Use callbacks to share common setup or constraints between actions.
+      def set_promotion
+        @promotion = Promotion.find(params[:id])
+      end
 
-        # Only allow a trusted parameter "white list" through.
-        def promotion_params
-          params.require(:promotion).permit(:title, :category, :dollar_value, :expiary_date, :merchant_id)
-        end
+      # Only allow a trusted parameter "white list" through.
+      def promotion_params
+        params.require(:promotion).permit(:title, :category, :dollar_value, :expiary_date, :merchant_id)
+      end
     end
   end
 end

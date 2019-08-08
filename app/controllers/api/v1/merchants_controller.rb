@@ -46,15 +46,15 @@ module Api
       end
 
       private
-        # Use callbacks to share common setup or constraints between actions.
-        def set_merchant
-          @merchant = Merchant.find(params[:id])
-        end
+      # Use callbacks to share common setup or constraints between actions.
+      def set_merchant
+        @merchant = Merchant.find(params[:id])
+      end
 
-        # Only allow a trusted parameter "white list" through.
-        def merchant_params
-          params.require(:merchant).permit(:name, :description, :address, :phone, :postal_code, :category)
-        end
+      # Only allow a trusted parameter "white list" through.
+      def merchant_params
+        params.require(:merchant).permit(:name, :description, :address, :phone, :postal_code, :category, :user_id)
+      end
     end
   end
 end
