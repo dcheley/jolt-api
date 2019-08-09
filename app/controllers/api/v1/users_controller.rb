@@ -32,7 +32,7 @@ module Api
       # PATCH/PUT /users/1
       def update
         if @user.update(user_params)
-          @firebase.update("users", { "#{@user.id}: #{@user}" })
+          @firebase.update("users", { "#{@user.id}": @user })
           render json: @user
         else
           render json: @user.errors, status: :unprocessable_entity
