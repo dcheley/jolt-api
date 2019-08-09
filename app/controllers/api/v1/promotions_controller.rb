@@ -3,6 +3,7 @@ module Api
     class PromotionsController < ApplicationController
       before_action :authorize_access_request!
       before_action :set_promotion, only: [:show, :update, :destroy]
+      before_action :set_firebase, only: [:create, :update, :destroy]
 
       # GET /promotions
       def index
@@ -18,11 +19,10 @@ module Api
 
       # POST /promotions
       def create
-        firebase = Firebase::Client.new(Rails.application.credentials.firebase_url, Rails.application.credentials.firebase_secret)
         @promotion = Promotion.new(promotion_params)
 
         if @promotion.save
-          firebase_response = firebase.push("promotions", @promotion)
+          @firebase.push("promotions/#{@promotion.id}", @promotion)
           render json: @promotion, status: :created
         else
           render json: @promotion.errors, status: :unprocessable_entity
@@ -32,6 +32,7 @@ module Api
       # PATCH/PUT /promotions/1
       def update
         if @promotion.update(promotion_params)
+          @firebase.update("promotions", { "#{@promotion.id}": @promotion })
           render json: @promotion
         else
           render json: @promotion.errors, status: :unprocessable_entity
@@ -40,6 +41,7 @@ module Api
 
       # DELETE /promotions/1
       def destroy
+        @firebase.delete("promotions/#{@promotion.id}", {})
         @promotion.destroy
       end
 
@@ -52,6 +54,10 @@ module Api
       # Only allow a trusted parameter "white list" through.
       def promotion_params
         params.require(:promotion).permit(:title, :category, :dollar_value, :expiary_date, :merchant_id)
+      end
+
+      def set_firebase
+        @firebase = Firebase::Client.new(Rails.application.credentials.firebase_url, Rails.application.credentials.firebase_secret)
       end
     end
   end
