@@ -3,6 +3,7 @@ module Api
     class MerchantsController < ApplicationController
       before_action :authorize_access_request!
       before_action :set_merchant, only: [:show, :update, :destroy]
+      before_action :set_firebase, only: [:create, :update, :destroy]
 
       # GET /merchants
       def index
@@ -13,7 +14,11 @@ module Api
 
       # GET /search_merchants
       def search_merchants
-        @merchants = Merchant.search(params[:search].order("name ASC"))
+        if !params[:search].nil?
+          @merchants = Merchant.search(params[:search].order("name ASC"))
+        else
+          @merchants = Merchant.all.order("name ASC")
+        end
 
         render json: @merchants
       end
@@ -25,11 +30,10 @@ module Api
 
       # POST /merchants
       def create
-        firebase = Firebase::Client.new(Rails.application.credentials.firebase_url, Rails.application.credentials.firebase_secret)
         @merchant = Merchant.new(merchant_params)
 
         if @merchant.save
-          firebase_response = firebase.push("merchants", @merchant)
+          @firebase.push("merchants/#{@merchant.id}", @merchant)
           render json: @merchant, status: :created
         else
           render json: @merchant.errors, status: :unprocessable_entity
@@ -38,9 +42,8 @@ module Api
 
       # PATCH/PUT /merchants/1
       def update
-        # firebase = Firebase::Client.new(Rails.application.credentials.firebase_url, Rails.application.credentials.firebase_secret)
-
         if @merchant.update(merchant_params)
+          @firebase.update("merchants", { "#{@merchant.id}": @merchant })
           render json: @merchant
         else
           render json: @merchant.errors, status: :unprocessable_entity
@@ -49,6 +52,8 @@ module Api
 
       # DELETE /merchants/1
       def destroy
+        @firebase.delete("merchants/#{@merchant.id}", {})
+
         @merchant.destroy
       end
 
@@ -61,6 +66,10 @@ module Api
       # Only allow a trusted parameter "white list" through.
       def merchant_params
         params.require(:merchant).permit(:name, :description, :address, :phone, :postal_code, :category, :user_id)
+      end
+
+      def set_firebase
+        @firebase = Firebase::Client.new(Rails.application.credentials.firebase_url, Rails.application.credentials.firebase_secret)
       end
     end
   end

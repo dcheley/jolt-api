@@ -15,7 +15,7 @@ class SignupController < ApplicationController
                           secure: Rails.env.production?)
 
       # Save in firebase db
-      firebase_response = firebase.push("users", user)
+      firebase.push("users/#{user.id}", user)
 
       render json: { csrf: tokens[:csrf], user_id: user.id }
     else
