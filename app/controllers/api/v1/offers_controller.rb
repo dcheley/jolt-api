@@ -1,0 +1,64 @@
+module Api
+  module V1
+    class OffersController < ApplicationController
+      before_action :authorize_access_request!
+      before_action :set_offer, only: [:show, :update, :destroy]
+      before_action :set_firebase, only: [:create, :update, :destroy]
+
+      # GET /offers
+      def index
+        @offers = Offer.all
+
+        render json: @offers
+      end
+
+      # GET /offers/1
+      def show
+        render json: @offer
+      end
+
+      # POST /offers
+      def create
+        @offer = Offer.new(offer_params)
+
+        if @offer.save
+          @firebase.push("offers/#{@offer.id}", @offer)
+          render json: @offer, status: :created
+        else
+          render json: @offer.errors, status: :unprocessable_entity
+        end
+      end
+
+      # PATCH/PUT /offers/1
+      def update
+        if @offer.update(offer_params)
+          @firebase.update("offers", { "#{@offer.id}": @offer })
+          render json: @offer
+        else
+          render json: @offer.errors, status: :unprocessable_entity
+        end
+      end
+
+      # DELETE /offers/1
+      def destroy
+        @firebase.delete("offers/#{@offer.id}", {})
+        @offer.destroy
+      end
+
+      private
+      # Use callbacks to share common setup or constraints between actions.
+      def set_offer
+        @offer = Offer.find(params[:id])
+      end
+
+      # Only allow a trusted parameter "white list" through.
+      def offer_params
+        params.require(:offer).permit(:title, :category, :dollar_value, :expiary_date, :merchant_id)
+      end
+
+      def set_firebase
+        @firebase = Firebase::Client.new(Rails.application.credentials.firebase_url, Rails.application.credentials.firebase_secret)
+      end
+    end
+  end
+end
