@@ -2,10 +2,14 @@ Rails.application.routes.draw do
 
   namespace :api do
     namespace :v1 do
-      resources :offers
-      resources :merchants
       resources :users
-
+      resources :merchants
+      resources :merchants do
+        resources :offers, only: [:index]
+        resources :promotions, only: [:index]
+      end
+      resources :offers
+      resources :promotions, only: [:create, :update, :destroy]
       get "search_merchants", to: "merchants#search_merchants"
     end
   end
