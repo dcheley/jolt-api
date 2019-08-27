@@ -5,9 +5,13 @@ module Api
       before_action :set_offer, only: [:show, :update, :destroy]
       before_action :set_firebase, only: [:create, :update, :destroy]
 
-      # GET /offers
+      # GET /offers or /merchants/:merchant_id/offers
       def index
-        @offers = Offer.all
+        if !params[:merchant_id]
+          @offers = Offer.all
+        else
+          @offers = Offer.where(merchant_id: params[:merchant_id])
+        end
 
         render json: @offers
       end
