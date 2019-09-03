@@ -23,16 +23,6 @@ module Api
         end
       end
 
-      # PATCH/PUT /feedbacks/1
-      def update
-        if @feedback.update(feedback_params)
-          @firebase.update("feedback", { "#{@feedback.id}": @feedback })
-          render json: @feedback
-        else
-          render json: @feedback.errors, status: :unprocessable_entity
-        end
-      end
-
       # DELETE /feedbacks/1
       def destroy
         @firebase.delete("feedback/#{@feedback.id}", {})
@@ -43,7 +33,7 @@ module Api
 
       # Only allow a trusted parameter "white list" through.
       def feedback_params
-        params.require(:offer).permit(:message, :user_id)
+        params.require(:offer).permit(:message, :user_id, :merchant_id)
       end
 
       def set_firebase

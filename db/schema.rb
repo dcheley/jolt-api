@@ -18,8 +18,10 @@ ActiveRecord::Schema.define(version: 2019_09_03_152623) do
   create_table "feedbacks", force: :cascade do |t|
     t.text "message", null: false
     t.bigint "user_id"
+    t.bigint "merchant_id"
     t.datetime "created_at", null: false
     t.datetime "updated_at", null: false
+    t.index ["merchant_id"], name: "index_feedbacks_on_merchant_id"
     t.index ["user_id"], name: "index_feedbacks_on_user_id"
   end
 
@@ -69,6 +71,7 @@ ActiveRecord::Schema.define(version: 2019_09_03_152623) do
     t.integer "role"
   end
 
+  add_foreign_key "feedbacks", "merchants"
   add_foreign_key "feedbacks", "users"
   add_foreign_key "merchants", "users"
   add_foreign_key "offers", "merchants"
