@@ -7,6 +7,7 @@ Rails.application.routes.draw do
       resources :merchants do
         resources :offers, only: [:index]
         resources :promotions, only: [:index]
+        resources :billings, only: [:show, :create, :update, :destroy]
       end
       resources :offers
       resources :promotions, only: [:create, :update, :destroy]

@@ -10,10 +10,28 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema.define(version: 2019_09_03_152623) do
+ActiveRecord::Schema.define(version: 2019_09_03_180233) do
 
   # These are extensions that must be enabled in order to support this database
   enable_extension "plpgsql"
+
+  create_table "billings", force: :cascade do |t|
+    t.string "first_name", null: false
+    t.string "last_name", null: false
+    t.string "institution", null: false
+    t.string "credit_card_number", null: false
+    t.string "credit_expiary_date", null: false
+    t.string "cvv", null: false
+    t.string "address"
+    t.string "city"
+    t.string "postal_code"
+    t.string "province"
+    t.string "phone"
+    t.bigint "merchant_id"
+    t.datetime "created_at", null: false
+    t.datetime "updated_at", null: false
+    t.index ["merchant_id"], name: "index_billings_on_merchant_id"
+  end
 
   create_table "feedbacks", force: :cascade do |t|
     t.text "message", null: false
@@ -71,6 +89,7 @@ ActiveRecord::Schema.define(version: 2019_09_03_152623) do
     t.integer "role"
   end
 
+  add_foreign_key "billings", "merchants"
   add_foreign_key "feedbacks", "merchants"
   add_foreign_key "feedbacks", "users"
   add_foreign_key "merchants", "users"
