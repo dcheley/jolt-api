@@ -5,7 +5,7 @@ module Api
       before_action :set_promotion, only: [:show, :update, :destroy]
       before_action :set_firebase, only: [:create, :update, :destroy]
 
-      # GET /merchants/:merchant_id/promotions
+      # GET /merchants or /merchants/:merchant_id/promotions
       def index
         @promotions = Promotion.where(merchant_id: params[:merchant_id])
 
@@ -41,7 +41,7 @@ module Api
       end
 
       private
-      
+
       def set_promotion
         @promotion = Promotion.find(params[:id])
       end
