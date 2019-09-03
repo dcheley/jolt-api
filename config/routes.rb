@@ -7,11 +7,11 @@ Rails.application.routes.draw do
       resources :merchants do
         resources :offers, only: [:index]
         resources :promotions, only: [:index]
-        resources :billings, only: [:show, :create, :update, :destroy]
+        resources :billings, only: [:index, :create, :update, :destroy]
       end
       resources :offers
       resources :promotions, only: [:create, :update, :destroy]
-      resources :feedbacks, only: [:create, :destroy, :index]
+      resources :feedbacks, only: [:index, :create, :destroy]
       get "search_merchants", to: "merchants#search_merchants"
     end
   end
