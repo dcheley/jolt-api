@@ -5,9 +5,11 @@ module Api
       before_action :set_billing, only: [:show, :update, :destroy]
       before_action :set_firebase, only: [:create, :update, :destroy]
 
-      # GET /merchants/:merchant_id/billings/1
-      def show
-        render json: @billing
+      # GET /merchants/:merchant_id/billings
+      def index
+        @billings = Billing.where(merchant_id: params[:merchant_id])
+
+        render json: @billings
       end
 
       # POST /merchants/:merchant_id/billings
@@ -41,7 +43,7 @@ module Api
       private
 
       def set_billing
-        @offer = Billing.find(params[:id])
+        @billing = Billing.find(params[:id])
       end
 
       # Only allow a trusted parameter "white list" through.
