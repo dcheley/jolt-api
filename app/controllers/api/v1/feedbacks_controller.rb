@@ -2,7 +2,8 @@ module Api
   module V1
     class FeedbacksController < ApplicationController
       before_action :authorize_access_request!
-      before_action :set_firebase, only: [:create, :update, :destroy]
+      before_action :set_feedback, only: [:destroy]
+      before_action :set_firebase, only: [:create, :destroy]
 
       # GET /feedbacks
       def index
@@ -31,9 +32,13 @@ module Api
 
       private
 
+      def set_feedback
+        @feedback = Feedback.find(params[:id])
+      end
+
       # Only allow a trusted parameter "white list" through.
       def feedback_params
-        params.require(:offer).permit(:message, :user_id, :merchant_id)
+        params.require(:feedback).permit(:message, :user_id, :merchant_id)
       end
 
       def set_firebase
