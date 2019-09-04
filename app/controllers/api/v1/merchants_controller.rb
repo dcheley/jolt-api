@@ -12,9 +12,9 @@ module Api
         render json: @merchants
       end
 
-      # GET /search_merchants
+      # GET /search_merchants?search=:params[:search]
       def search_merchants
-        if !params[:search].nil?
+        if !params[:search].blank?
           @merchants = Merchant.search(params[:search].order("name ASC"))
         else
           @merchants = Merchant.all.order("name ASC")
@@ -58,7 +58,7 @@ module Api
       end
 
       private
-      
+
       def set_merchant
         @merchant = Merchant.find(params[:id])
       end
