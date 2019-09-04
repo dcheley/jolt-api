@@ -15,7 +15,7 @@ module Api
       # GET /search_merchants?search=:params[:search]
       def search_merchants
         if !params[:search].blank?
-          @merchants = Merchant.search(params[:search].order("name ASC"))
+          @merchants = Merchant.search(params[:search]).order("name ASC")
         else
           @merchants = Merchant.all.order("name ASC")
         end
