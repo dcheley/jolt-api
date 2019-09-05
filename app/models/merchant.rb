@@ -1,7 +1,7 @@
 class Merchant < ApplicationRecord
   belongs_to :user, optional: true
   has_many :offers
-  has_many :promotions
+  has_many :advertisements
   has_many :billings
 
   validates :name, presence: true

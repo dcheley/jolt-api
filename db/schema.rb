@@ -10,10 +10,21 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema.define(version: 2019_09_03_180233) do
+ActiveRecord::Schema.define(version: 2019_09_05_164101) do
 
   # These are extensions that must be enabled in order to support this database
   enable_extension "plpgsql"
+
+  create_table "advertisements", force: :cascade do |t|
+    t.string "title", null: false
+    t.string "category"
+    t.decimal "dollar_value", precision: 8, scale: 2
+    t.date "expiary_date"
+    t.integer "merchant_id"
+    t.datetime "created_at", null: false
+    t.datetime "updated_at", null: false
+    t.index ["merchant_id"], name: "index_advertisements_on_merchant_id"
+  end
 
   create_table "billings", force: :cascade do |t|
     t.string "first_name", null: false
@@ -65,17 +76,6 @@ ActiveRecord::Schema.define(version: 2019_09_03_180233) do
     t.datetime "created_at", null: false
     t.datetime "updated_at", null: false
     t.index ["merchant_id"], name: "index_offers_on_merchant_id"
-  end
-
-  create_table "promotions", force: :cascade do |t|
-    t.string "title", null: false
-    t.string "category"
-    t.decimal "dollar_value", precision: 8, scale: 2
-    t.date "expiary_date"
-    t.integer "merchant_id"
-    t.datetime "created_at", null: false
-    t.datetime "updated_at", null: false
-    t.index ["merchant_id"], name: "index_promotions_on_merchant_id"
   end
 
   create_table "users", force: :cascade do |t|

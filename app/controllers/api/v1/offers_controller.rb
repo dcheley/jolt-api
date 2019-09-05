@@ -16,11 +16,6 @@ module Api
         render json: @offers
       end
 
-      # GET /offers/1
-      def show
-        render json: @offer
-      end
-
       # POST /offers
       def create
         @offer = Offer.new(offer_params)
@@ -50,7 +45,7 @@ module Api
       end
 
       private
-      
+
       def set_offer
         @offer = Offer.find(params[:id])
       end
