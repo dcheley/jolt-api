@@ -48,7 +48,7 @@ module Api
 
       # Only allow a trusted parameter "white list" through.
       def advertisement_params
-        params.require(:advertisement).permit(:title, :category, :dollar_value, :expiary_date, :merchant_id)
+        params.require(:advertisement).permit(:title, :category, :dollar_value, :expiry_date, :merchant_id)
       end
 
       def set_firebase

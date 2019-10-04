@@ -14,7 +14,4 @@ class RefreshController < ApplicationController
 
     render json: { csrf: tokens[:csrf], user_id: @current_user.id }
   end
-
-  private
-
 end

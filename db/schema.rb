@@ -10,7 +10,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema.define(version: 2019_09_10_205505) do
+ActiveRecord::Schema.define(version: 2019_10_02_174803) do
 
   # These are extensions that must be enabled in order to support this database
   enable_extension "plpgsql"
@@ -19,7 +19,7 @@ ActiveRecord::Schema.define(version: 2019_09_10_205505) do
     t.string "title", null: false
     t.string "category"
     t.decimal "dollar_value", precision: 8, scale: 2
-    t.date "expiary_date"
+    t.date "expiry_date"
     t.integer "merchant_id"
     t.datetime "created_at", null: false
     t.datetime "updated_at", null: false
@@ -31,7 +31,7 @@ ActiveRecord::Schema.define(version: 2019_09_10_205505) do
     t.string "last_name", null: false
     t.string "institution", null: false
     t.string "credit_card_number", null: false
-    t.string "credit_expiary_date", null: false
+    t.string "credit_expiry_date", null: false
     t.string "cvv", null: false
     t.string "address"
     t.string "city"
@@ -41,6 +41,7 @@ ActiveRecord::Schema.define(version: 2019_09_10_205505) do
     t.bigint "merchant_id"
     t.datetime "created_at", null: false
     t.datetime "updated_at", null: false
+    t.string "stripe_customer_id"
     t.index ["merchant_id"], name: "index_billings_on_merchant_id"
   end
 
@@ -48,6 +49,7 @@ ActiveRecord::Schema.define(version: 2019_09_10_205505) do
     t.datetime "start_time", null: false
     t.datetime "end_time", null: false
     t.bigint "offers_id"
+    t.text "description"
     t.index ["offers_id"], name: "index_events_on_offers_id"
   end
 
@@ -78,7 +80,7 @@ ActiveRecord::Schema.define(version: 2019_09_10_205505) do
     t.string "title", null: false
     t.string "category"
     t.decimal "dollar_value", precision: 8, scale: 2
-    t.date "expiary_date"
+    t.date "expiry_date"
     t.bigint "merchant_id"
     t.datetime "created_at", null: false
     t.datetime "updated_at", null: false

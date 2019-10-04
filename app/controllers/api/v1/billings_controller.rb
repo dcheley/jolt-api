@@ -15,6 +15,45 @@ module Api
       # POST /merchants/:merchant_id/billings
       def create
         @billing = Billing.new(billing_params)
+        # @merchant = Merchant.find(params[:merchant_id])
+        Stripe.api_key = Rails.application.credentials.stripe_secret_key
+
+        # begin
+          puts "stripee"
+          customer = Stripe::PaymentMethod.create(
+            type: "card",
+            card: {
+              number: params[:credit_card_number],
+              exp_moth: params[:credit_expiry_date],
+              cvc: params[:cvv]
+            },
+            billing_details: {
+              address: {
+                city: params[:city],
+                country: "Canada",
+                line1: params[:address],
+                postal_code: params[:postal_code],
+                state: params[:province]
+              },
+              email: "cheleydan@gmail.com",
+              # email: @merchant.user.email,
+              name: params[:first_name] + ' ' + params[:last_name],
+              phone: params[:phone],
+
+            }
+            # source: params[:stripeToken]
+          )
+          # customer.create_source(
+          #   customer.id,
+          #   {
+          #
+          #   }
+          # )
+          @billing.stripe_customer_id = customer.id
+          @billing.save
+        # rescue Exception => e
+        #   error = e
+        # end
 
         if @billing.save
           @firebase.push("billings/#{@billing.id}", @billing)
@@ -47,11 +86,10 @@ module Api
       end
 
       # Only allow a trusted parameter "white list" through.
-      # TODO: Remove columns and redo forms later when we use Stripe/w.e
       def billing_params
         params.require(:billing).permit(:first_name, :last_name, :institution,
           :address, :city, :postal_code, :province, :phone, :merchant_id, :credit_card_number,
-          :credit_expiary_date, :cvv)
+          :credit_expiry_date, :cvv, :stripe_customer_id)
       end
 
       def set_firebase
