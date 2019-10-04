@@ -52,7 +52,7 @@ module Api
 
       # Only allow a trusted parameter "white list" through.
       def event_params
-        params.require(:event).permit(:start_time, :end_time, :offer_id)
+        params.require(:event).permit(:start_time, :end_time, :description, :offer_id)
       end
 
       def set_firebase

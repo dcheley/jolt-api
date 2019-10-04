@@ -52,7 +52,7 @@ module Api
 
       # Only allow a trusted parameter "white list" through.
       def offer_params
-        params.require(:offer).permit(:title, :category, :dollar_value, :expiary_date, :merchant_id)
+        params.require(:offer).permit(:title, :category, :dollar_value, :expiry_date, :merchant_id)
       end
 
       def set_firebase
