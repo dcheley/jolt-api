@@ -48,9 +48,9 @@ ActiveRecord::Schema.define(version: 2019_10_02_174803) do
   create_table "events", force: :cascade do |t|
     t.datetime "start_time", null: false
     t.datetime "end_time", null: false
-    t.bigint "offers_id"
+    t.bigint "offer_id"
     t.text "description"
-    t.index ["offers_id"], name: "index_events_on_offers_id"
+    t.index ["offer_id"], name: "index_events_on_offer_id"
   end
 
   create_table "feedbacks", force: :cascade do |t|
@@ -99,7 +99,7 @@ ActiveRecord::Schema.define(version: 2019_10_02_174803) do
   end
 
   add_foreign_key "billings", "merchants"
-  add_foreign_key "events", "offers", column: "offers_id"
+  add_foreign_key "events", "offers"
   add_foreign_key "feedbacks", "merchants"
   add_foreign_key "feedbacks", "users"
   add_foreign_key "merchants", "users"

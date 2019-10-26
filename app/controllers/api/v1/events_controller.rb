@@ -10,7 +10,8 @@ module Api
         if !params[:merchant_id]
           @events = Event.all
         else
-          @events = Event.where(merchant_id: params[:merchant_id])
+          @merchant = Merchant.find(params[:merchant_id])
+          @events = @merchant.events
         end
 
         render json: @events
