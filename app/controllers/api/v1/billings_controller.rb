@@ -18,7 +18,7 @@ module Api
         # @merchant = Merchant.find(params[:merchant_id])
         Stripe.api_key = Rails.application.credentials.stripe_secret_key
 
-        # begin
+        begin
           puts "stripee"
           customer = Stripe::PaymentMethod.create(
             type: "card",
@@ -37,18 +37,12 @@ module Api
               },
               email: "cheleydan@gmail.com",
               # email: @merchant.user.email,
-              name: params[:first_name] + ' ' + params[:last_name],
+              name: "#{params[:first_name]} #{params[:last_name]}",
               phone: params[:phone],
 
             }
             # source: params[:stripeToken]
           )
-          # customer.create_source(
-          #   customer.id,
-          #   {
-          #
-          #   }
-          # )
           @billing.stripe_customer_id = customer.id
           @billing.save
         # rescue Exception => e
