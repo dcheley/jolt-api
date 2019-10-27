@@ -30,7 +30,7 @@ module Api
             billing_details: {
               address: {
                 city: params[:city],
-                country: "Canada",
+                country: "CA",
                 line1: params[:address],
                 postal_code: params[:postal_code],
                 state: params[:province]
@@ -45,9 +45,9 @@ module Api
           )
           @billing.stripe_customer_id = customer.id
           @billing.save
-        # rescue Exception => e
-        #   error = e
-        # end
+        rescue Exception => e
+          error = e
+        end
 
         if @billing.save
           @firebase.push("billings/#{@billing.id}", @billing)
