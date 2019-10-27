@@ -7,7 +7,7 @@ module Api
 
       # GET /merchants
       def index
-        @merchants = Merchant.all
+        @merchants = Merchant.all.order("name ASC")
 
         render json: @merchants
       end
@@ -16,6 +16,8 @@ module Api
       def search_merchants
         if !params[:search].blank?
           @merchants = Merchant.search(params[:search]).order("name ASC")
+        elsif !params[:category].blank?
+          @merchants = Merchant.where(category: params[:category]).order("category ASC")
         else
           @merchants = Merchant.all.order("name ASC")
         end
