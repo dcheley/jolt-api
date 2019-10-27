@@ -5,7 +5,7 @@ class Merchant < ApplicationRecord
   has_many :advertisements
   has_many :billings
 
-  validates :name, presence: true
+  validates :name, :category, presence: true
   validates :description, length: { maximum: 1000 }
 
   def self.search(search)
