@@ -22,6 +22,8 @@ module Api
         @event = Event.new(event_params)
 
         if @event.save
+          # Create next occuring event if user indicates the event is recurring
+          RecurringEvents::Schedule.new(@event).call if params[:occurence] != "none"
           @firebase.push("events/#{@event.id}", @event)
           render json: @event, status: :created
         else
@@ -32,6 +34,7 @@ module Api
       # PATCH/PUT /events/1
       def update
         if @event.update(event_params)
+          RecurringEvents::Schedule.new(@event).call if params[:occurence] != "none"
           @firebase.update("events", { "#{@event.id}": @event })
           render json: @event
         else
@@ -53,7 +56,7 @@ module Api
 
       # Only allow a trusted parameter "white list" through.
       def event_params
-        params.require(:event).permit(:start_time, :end_time, :description, :offer_id)
+        params.require(:event).permit(:start_time, :end_time, :description, :offer_id, :occurrence, :next_date)
       end
 
       def set_firebase
