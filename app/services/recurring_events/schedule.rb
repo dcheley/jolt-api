@@ -1,7 +1,7 @@
 class RecurringEvents::Schedule < Struct.new(:event)
   def call
-    next_date = NextRecurringDate.new(event).calculate
-    event = Event.new(next_date: next_date)
+    next_event = RecurringEvents::NextRecurringDate.new(event).calculate
+    event = Event.new(next_event.attributes)
     event.save && schedule_background_job(event)
   end
 
