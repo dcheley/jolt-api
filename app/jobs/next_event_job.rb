@@ -1,4 +1,4 @@
-class RunEventJob < ApplicationJob
+class NextEventJob < ApplicationJob
   queue_as :default
 
   def perform(event)

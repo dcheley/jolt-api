@@ -23,7 +23,10 @@ module Api
 
         if @event.save
           # Create next occuring event if user indicates the event is recurring
-          RecurringEvents::Schedule.new(@event).call if params[:occurence] != "none"
+          if @event.occurrence != "none"
+            recurring_event = RecurringEvents::Schedule.new(@event).call
+            @firebase.push("events/#{recurring_event.id}", recurring_event)
+          end
           @firebase.push("events/#{@event.id}", @event)
           render json: @event, status: :created
         else
